@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ConsoleDatabaseRestorer")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("HP")]
+[assembly: AssemblyCompany("Vasily Kabanov")]
 [assembly: AssemblyProduct("ConsoleDatabaseRestorer")]
-[assembly: AssemblyCopyright("Copyright © HP 2015")]
+[assembly: AssemblyCopyright("Copyright © Vasily Kabanov 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

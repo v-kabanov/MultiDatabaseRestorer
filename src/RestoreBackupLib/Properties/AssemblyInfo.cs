@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("RestoreBackupLib")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("HP")]
+[assembly: AssemblyCompany("Vasily Kabanov")]
 [assembly: AssemblyProduct("RestoreBackupLib")]
-[assembly: AssemblyCopyright("Copyright © HP 2015")]
+[assembly: AssemblyCopyright("Copyright © Vasily Kabanov 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

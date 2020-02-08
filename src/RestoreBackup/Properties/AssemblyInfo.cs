@@ -8,9 +8,9 @@ using System.Windows;
 [assembly: AssemblyTitle("RestoreBackup")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("HP")]
+[assembly: AssemblyCompany("Vasily Kabanov")]
 [assembly: AssemblyProduct("RestoreBackup")]
-[assembly: AssemblyCopyright("Copyright © HP 2014")]
+[assembly: AssemblyCopyright("Copyright © Vasily Kabanov 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

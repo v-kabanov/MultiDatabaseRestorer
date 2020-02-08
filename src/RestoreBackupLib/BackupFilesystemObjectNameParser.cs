@@ -114,8 +114,6 @@ namespace RestoreBackupLib
             Check.DoRequireArgumentNotNull(input, "input");
             Check.DoRequireArgumentNotNull(regex, "regex");
 
-            string result = null;
-
             var match = regex.Match(input);
             if (match.Success)
             {
