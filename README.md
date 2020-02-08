@@ -14,3 +14,7 @@ It will automatically create directories, first backup in a month will be full, 
 Separate historical directory trees are created under per-database folders, directory structure under root backup folder is
 {db name} / yyyy-MM-MMM / {monthly full, daily diff and log backup files}
 Backup folders are thus monthly with up to ~63 backup files.
+
+When databases are moved/copied from one server to another SQL users can optionally be re-associated with equally named SQL logins.
+
+Note that current version is using SMO library v150.18208 distributed via nuget package. The package contains native binaries and every project producing an executable output has to reference the package in order for them to be delivered into output directory. In addition it does not support 'Any CPU' platform, only x86 or x64.
