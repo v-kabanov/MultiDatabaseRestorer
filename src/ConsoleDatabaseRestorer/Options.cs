@@ -1,7 +1,6 @@
 ﻿using System.Configuration;
 using System.Linq;
 using CommandLine;
-using CommandLine.Text;
 
 namespace ConsoleDatabaseRestorer
 {
@@ -64,6 +63,11 @@ namespace ConsoleDatabaseRestorer
             }
             set => _targetServer = value;
         }
+
+        [Option("MaxExpectedLastBackupAgeHours"
+            , HelpText = "Expected max number of hours elapsed from the start of the last restored backup for each database; violation to produce warning"
+            , Required = false, Default = 0)]
+        public double MaxExpectedLastBackupAgeHours { get; set; }
 
         [Option(nameof(RebindUsersWithSqlLogins), Default = false, HelpText = "Rebind orphaned users with SQL logins by matching name; useful when restoring on another server.")]
         public bool RebindUsersWithSqlLogins { get; set; }

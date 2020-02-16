@@ -181,7 +181,13 @@ namespace RestoreBackupLib
             IsPrepared = true;
         }
 
-        public bool Restore(bool rebindUsersWithSqlLogins = false)
+        /// <returns>
+        ///     Summary unless it fails
+        /// </returns>
+        /// <exception cref="RestorationException">
+        ///     Any failure
+        /// </exception>
+        public RestorationSummary Restore(bool rebindUsersWithSqlLogins = false)
         {
             if (!IsPrepared)
             {
@@ -189,21 +195,37 @@ namespace RestoreBackupLib
             }
             Check.Ensure(IsPrepared);
 
+            var result = new RestorationSummary();
+
             try
             {
                 for (var n = 0; n < _databaseRestorers.Count; ++n)
                 {
-                    _databaseRestorers[n].Restore();
-                    if (rebindUsersWithSqlLogins)
-                        _databaseRestorers[n].ReBindDatabaseUsersWithSqlLogins();
-                    if (_worker != null)
+                    var restorer = _databaseRestorers[n];
+                    try
                     {
-                        _worker.ReportProgress((n + 1) * 100 / _databaseRestorers.Count);
-                        if (_worker.CancellationPending)
+                        restorer.Restore();
+
+                        result.AddSuccess(restorer.DatabaseName, restorer.LastRestoredBackup);
+
+                        if (rebindUsersWithSqlLogins)
+                            restorer.ReBindDatabaseUsersWithSqlLogins();
+                        if (_worker != null)
                         {
-                            Log.Warn("Cancelled");
-                            return false;
+                            _worker.ReportProgress((n + 1) * 100 / _databaseRestorers.Count);
+                            if (_worker.CancellationPending)
+                            {
+                                Log.Warn("Cancelled");
+                                result.Status = Status.Error;
+                                result.StatusMessage = "Cancelled";
+                                return result;
+                            }
                         }
+                    }
+                    catch (Exception dbException)
+                    {
+                        result.AddFailure(restorer.DatabaseName, dbException.GetBaseException().Message, restorer.LastRestoredBackup);
+                        throw;
                     }
                 }
 
@@ -212,12 +234,17 @@ namespace RestoreBackupLib
                     DropDatabase(name);
                 }
 
-                return true;
+                return result;
             }
             catch (Exception e)
             {
+                if (!result.IsFailure)
+                {
+                    result.Status = Status.Error;
+                    result.StatusMessage = e.GetBaseException().Message;
+                }
                 Log.ErrorFormat("Error when restoring: {0}", e);
-                throw;
+                throw new RestorationException("Failure", e, result);
             }
             finally
             {

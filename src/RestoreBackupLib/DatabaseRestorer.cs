@@ -42,6 +42,11 @@ namespace RestoreBackupLib
 
         private readonly IBackupFileCatalog _backupCatalog;
 
+        /// <summary>
+        ///     Last backup successfully restored by <see cref="Restore"/>.
+        /// </summary>
+        public IBackupItem LastRestoredBackup { get; private set; }
+
         public bool IsPrepared { get; private set; }
 
         private class DatabaseFile
@@ -90,6 +95,7 @@ namespace RestoreBackupLib
 
         public Database Database => _multiRestorer.Server.Databases[_databaseName];
 
+        public List<IBackupItem> GetRestorePlan() => _backupItems.Cast<IBackupItem>().ToList();
 
         /// <summary>
         ///     Finds and remembers the sequence of backups to restore.
@@ -153,6 +159,7 @@ namespace RestoreBackupLib
                     foreach (var item in _backupItems)
                     {
                         Restore(item);
+                        LastRestoredBackup = item;
                     }
 
                     Server.ConnectionContext.ExecuteNonQuery($"restore database [{DatabaseName}] with recovery;");

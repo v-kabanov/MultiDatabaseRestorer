@@ -6,6 +6,8 @@ Supports dynamic (growing) collections of 'split' databases (e.g. Documents1, Do
 The whole collection is restored even though the exact list of databases is not known when apps are configured.
 
 Console app supports restoration to the latest point only and is suitable for automated maintenance of e.g. a standby server.
+Restorer keeps track of restoration status per database, including last restored backup properties. It allows to detect issues and send alarms through log4net appender (e.g. using gmail smtp); the console app supports sending a warning if the age of the last restored backup exceeds a limit. It should be useful for regular standby server maintenance and backup verification.
+
 The GUI app supports restoration to a specific point in time for manual data recovery.
 
 Sample powershell script for automated backup of all user databases is included (see 'scripts' folder).
