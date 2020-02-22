@@ -37,6 +37,8 @@ namespace ConsoleDatabaseRestorer
             var namingConvention = BackupDirectoryNamingConvention.CreateDefaultMonthDayDayConvention();
             RestorationSummary result;
 
+            var startTime = DateTime.UtcNow;
+
             try
             {
                 var restorer = new MultiRestorer(options.BackupFolder, null, null, options.TargetServer, namingConvention);
@@ -51,7 +53,7 @@ namespace ConsoleDatabaseRestorer
                     {
                         if (dbSummary.Status == Status.Success
                             && dbSummary.LastRestoredBackup != null
-                            && (DateTime.UtcNow - dbSummary.LastRestoredBackup.BackupStartTime.ToUniversalTime()).TotalHours > options.MaxExpectedLastBackupAgeHours)
+                            && (startTime - dbSummary.LastRestoredBackup.BackupStartTime.ToUniversalTime()).TotalHours > options.MaxExpectedLastBackupAgeHours)
                         {
                             dbSummary.Status = Status.Warning;
                             dbSummary.Message = $"Last backup time is older than the expected maximum of {options.MaxExpectedLastBackupAgeHours} hours";
